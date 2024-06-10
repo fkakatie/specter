@@ -45,14 +45,16 @@
   --shadow-hover: 0 2px 8px 0 var(--transparent-black-300);
   --shadow-dragged: 0 3px 12px 0 var(--transparent-black-300);
 
-  /* nav height */
-  --nav-height: 72px;
+  /* widths and heights */
+  --header-height: 72px;
+  --horizontal-spacing: var(--spacing-l);
 }
 
 @media (width >= 900px) {
   :root {
-    /* nav height */
-    --nav-height: 64px;
+    /* widths and heights */
+    --header-height: 68px;
+    --horizontal-spacing: var(--spacing-xl);
   }
 }
 
@@ -86,11 +88,12 @@ body[data-scroll='disabled'] {
 }
 
 header {
-  min-height: var(--nav-height);
+  min-height: var(--header-height);
+  transition: height 0.2s, min-height 0.2s;
 }
 
 main {
-  margin: 0 var(--spacing-l);
+  margin: 0 var(--horizontal-spacing);
   border-radius: var(--rounding-xl);
   background-color: var(--color-background);
   max-width: 1200px;
@@ -99,7 +102,7 @@ main {
 @media (width >= 900px) {
   main {
     margin: 0 auto;
-    max-width: calc(100% - (2 * var(--spacing-l)));
+    max-width: calc(100% - (2 * var(--horizontal-spacing)));
   }
 }
 
@@ -117,7 +120,7 @@ main > .section {
 
 main > .section > div {
   margin: auto;
-  padding: var(--spacing-l);
+  padding: var(--horizontal-spacing);
 }
 
 main > .section:first-of-type {
@@ -140,17 +143,16 @@ main > .section:last-of-type {
 /* section metadata */
 main .section.light {
   background-color: var(--light-color);
-  margin: 0;
 }
 
 main .section.dark {
   background-color: var(--gray-400);
-  margin: 0;
 }
 
 /* images and icons */
 p.img-wrapper {
   margin: 0;
+  line-height: 0;
 }
 
 img {
@@ -288,11 +290,12 @@ a:hover {
   text-decoration: underline;
 }
 
-/* buttons */
-p.button-wrapper{
-  /* */
+a:focus {
+  outline: var(--border-m) solid var(--color-link);
+  outline-offset: var(--border-m);
 }
 
+/* buttons */
 a.button,
 button.button {
   display: inline-block;
@@ -339,7 +342,7 @@ a.button.outline:hover,
 button.button.outline:hover,
 button.button.outline:hover {
   border-color: var(--color-link-hover);
-  background-color: var(--color-background);
+  background-color: var(--blue-100);
   color: var(--color-link-hover);
 }
 
@@ -371,4 +374,12 @@ button {
   border: 0;
   padding: 0;
   background-color: transparent;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: var(--border-m) solid var(--color-link);
+  outline-offset: var(--border-m);
 }
