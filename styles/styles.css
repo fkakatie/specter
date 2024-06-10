@@ -28,9 +28,9 @@
   --color-link-hover: var(--blue-1000);
 
   /* fonts */
-  --body-font-family: RobotoFlex, RobotoFlex-fallback, sans-serif;
+  --body-font-family: robotoflex, robotoflex-fallback, sans-serif;
   --heading-font-family: var(--body-font-family);
-  --code-font-family: RobotoMono, 'Courier New', monospace;
+  --code-font-family: robotomono, 'Courier New', monospace;
 
   /* spacing */
   --spacing-xxl: var(--spacing-600);
@@ -60,7 +60,7 @@
 
 /* fallback fonts */
 @font-face {
-  font-family: RobotoFlex-fallback;
+  font-family: robotoflex-fallback;
   size-adjust: 97.389%;
   src: local('Arial');
 }
@@ -215,7 +215,7 @@ h4 {
   font-size: var(--heading-size-m);
 }
 
-h3 {
+h5 {
   font-size: var(--heading-size-s);
 }
 
@@ -340,7 +340,7 @@ button.button.outline {
 
 a.button.outline:hover,
 button.button.outline:hover,
-button.button.outline:hover {
+button.button.outline:focus {
   border-color: var(--color-link-hover);
   background-color: var(--blue-100);
   color: var(--color-link-hover);
@@ -355,7 +355,7 @@ button.button.accent {
 
 a.button.accent:hover,
 button.button.accent:hover,
-button.button.accent:hover {
+button.button.accent:focus {
   border-color: var(--gray-200);
   background-color: var(--gray-200);
 }

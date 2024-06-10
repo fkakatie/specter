@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 header {
   padding: var(--spacing-m) var(--horizontal-spacing);
 }
@@ -84,9 +85,6 @@ header .nav-sections button + ul > li a {
   cursor: pointer;
 }
 
-header .nav-sections button {
-  padding-right: 0.5em;
-}
 
 header .nav-sections nav ul li a:hover,
 header .nav-sections nav ul li a:focus,
@@ -106,6 +104,7 @@ header .nav-sections button {
   align-items: center;
   justify-content: space-between;
   gap: 0.5ch;
+  padding-right: 0.5em;
   white-space: nowrap;
 }
 
@@ -175,12 +174,10 @@ header .nav-sections i.symbol-chevron::after {
     right: calc(var(--horizontal-spacing) + 0.3em);
     width: 0;
     height: 0;
-    width: 0px;
-    height: 0px;
     border-left: 9px solid transparent;
     border-right: 9px solid transparent;
     border-bottom: 9px solid var(--color-background);
-    z-index: 200;
+    z-index: 2;
   }
 
   header .nav-sections .subsection button + ul > li a {
