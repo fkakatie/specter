@@ -3,7 +3,6 @@ import {
   buildBlock,
   loadHeader,
   loadFooter,
-  decorateButtons,
   decorateIcons,
   decorateSections,
   decorateBlocks,
@@ -48,11 +47,40 @@ async function loadFonts() {
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
+    // buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
+}
+
+function decorateButtons(main) {
+  main.querySelectorAll('p a[href]').forEach((a) => {
+    a.title = a.title || a.textContent;
+    const p = a.closest('p');
+    if (a.href !== a.textContent && p.textContent === a.textContent) {
+      a.className = 'button';
+      const strong = a.closest('strong');
+      const em = a.closest('em');
+      const double = !!strong && !!em;
+      if (double) {
+        a.classList.add('accent');
+      } else if (strong) {
+        a.classList.add('emphasis');
+      } else if (em) {
+        a.classList.add('outline');
+      }
+      p.innerHTML = a.outerHTML;
+      p.className = 'button-wrapper';
+    }
+  });
+}
+
+function decorateImages(main) {
+  main.querySelectorAll('p img').forEach((img) => {
+    const p = img.closest('p');
+    p.className = 'img-wrapper';
+  });
 }
 
 /**
@@ -61,12 +89,12 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  // hopefully forward compatible button decoration
-  decorateButtons(main);
   decorateIcons(main);
+  decorateImages(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateButtons(main);
 }
 
 /**
