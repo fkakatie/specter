@@ -3,5 +3,5 @@ Please always provide the [GitHub issue(s)](../issues) your PR is for, as well a
 Fix #<gh-issue-id>
 
 Test URLs:
-- Before: https://main--specter--fkakatie.hlx.live/
-- After: https://<branch>--specter--fkakatie.hlx.live/
+- Before: https://main--specter--fkakatie.hlx.page/
+- After: https://<branch>--specter--fkakatie.hlx.page/
