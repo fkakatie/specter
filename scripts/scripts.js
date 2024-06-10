@@ -42,6 +42,34 @@ async function loadFonts() {
 }
 
 /**
+ * Replaces image icons with inline SVGs when they enter the viewport.
+ */
+export function swapIcons() {
+  document.querySelectorAll('span.icon > img').forEach((icon) => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(async (entry) => {
+        if (entry.isIntersecting) {
+          const resp = await fetch(icon.src);
+          const temp = document.createElement('div');
+          temp.innerHTML = await resp.text();
+          const svg = temp.querySelector('svg');
+          temp.remove();
+          // check if svg has inline styles
+          let style = svg.querySelector('style');
+          if (style) style = style.textContent.toLowerCase().includes('currentcolor');
+          let fill = svg.querySelector('[fill]');
+          if (fill) fill = fill.getAttribute('fill').toLowerCase().includes('currentcolor');
+          // replace image with SVG, ensuring color inheritance
+          if ((style || fill) || (!style && !fill)) icon.replaceWith(svg);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0 });
+    observer.observe(icon);
+  });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -54,22 +82,23 @@ function buildAutoBlocks(main) {
   }
 }
 
+/**
+ * Decorates links with appropriate classes to style them as buttons/
+ * @param {HTMLElement} main The main container element
+ */
 function decorateButtons(main) {
   main.querySelectorAll('p a[href]').forEach((a) => {
     a.title = a.title || a.textContent;
     const p = a.closest('p');
+    // identify standalone links
     if (a.href !== a.textContent && p.textContent === a.textContent) {
       a.className = 'button';
       const strong = a.closest('strong');
       const em = a.closest('em');
       const double = !!strong && !!em;
-      if (double) {
-        a.classList.add('accent');
-      } else if (strong) {
-        a.classList.add('emphasis');
-      } else if (em) {
-        a.classList.add('outline');
-      }
+      if (double) a.classList.add('accent');
+      else if (strong) a.classList.add('emphasis');
+      else if (em) a.classList.add('outline');
       p.innerHTML = a.outerHTML;
       p.className = 'button-wrapper';
     }
@@ -138,6 +167,7 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+  swapIcons(main);
 
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
