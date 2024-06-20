@@ -1,8 +1,8 @@
 {
-  "name": "@adobe/aem-boilerplate",
+  "name": "@fkakatie/specter",
   "private": true,
-  "version": "1.3.0",
-  "description": "Starter project for Adobe Helix",
+  "version": "0.0.0",
+  "description": "Starter project for Adobe AEM with Specter",
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
@@ -10,18 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adobe/aem-boilerplate.git"
+    "url": "git+https://github.com/fkakatie/specter.git"
   },
-  "author": "Adobe",
-  "license": "Apache License 2.0",
+  "author": "@fkakatie",
   "bugs": {
-    "url": "https://github.com/adobe/aem-boilerplate/issues"
+    "url": "https://github.com/fkakatie/specter/issues"
   },
-  "homepage": "https://github.com/adobe/aem-boilerplate#readme",
+  "homepage": "https://main--specter--fkakatie.hlx.live/",
   "devDependencies": {
-    "@babel/core": "7.24.7",
     "@babel/eslint-parser": "7.24.7",
-    "chai": "5.1.1",
     "eslint": "8.57.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.1",
