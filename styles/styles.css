@@ -137,12 +137,6 @@ main > .section:last-of-type {
   border-bottom-right-radius: var(--rounding-xl);
 }
 
-@media (width >= 900px) {
-  main > .section > div {
-    padding: var(--spacing-xl);
-  }
-}
-
 /* section metadata */
 main .section.light {
   background-color: var(--light-color);
