@@ -117,7 +117,6 @@ function setup() {
 /**
  * Auto initializiation.
  */
-
 function init() {
   setup();
   sampleRUM();
