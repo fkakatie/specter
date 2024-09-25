@@ -1,6 +1,5 @@
 footer {
   padding: var(--spacing-m) var(--horizontal-spacing);
-  font-size: var(--body-size-m);
   color: var(--gray-700);
 }
 
@@ -21,7 +20,7 @@ footer section {
   align-items: center;
   justify-content: space-between;
   gap: 1ch;
-  max-width: 1200px;
+  max-width: var(--site-width);
   margin: 0 auto;
 }
 
