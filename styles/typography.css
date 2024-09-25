@@ -1,5 +1,6 @@
 :root {
   /* font sizes */
+    --font-size-25: 12px;
     --font-size-50: 13px;
     --font-size-75: 15px;
    --font-size-100: 17px;
@@ -68,6 +69,7 @@
 @media (width >= 900px) {
   :root {
     /* font sizes */
+      --font-size-25: 10px;
       --font-size-50: 11px;
       --font-size-75: 12px;
      --font-size-100: 14px;
