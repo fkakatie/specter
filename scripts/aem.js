@@ -580,7 +580,7 @@ async function loadFooter(footer) {
 }
 
 /**
- * Wait for first image.
+ * Wait for first (LCP) image.
  * @param {Element} section section element
  */
 async function waitForFirstImage(section) {
