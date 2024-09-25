@@ -2,6 +2,7 @@ import {
   // buildBlock,
   loadHeader,
   loadFooter,
+  decorateIcon,
   decorateIcons,
   decorateSections,
   decorateBlocks,
@@ -25,36 +26,48 @@ async function loadFonts() {
   }
 }
 
+function swapIcon(icon) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(async (entry) => {
+      if (entry.isIntersecting) {
+        const resp = await fetch(icon.src);
+        const temp = document.createElement('div');
+        temp.innerHTML = await resp.text();
+        const svg = temp.querySelector('svg');
+        temp.remove();
+        // check if svg has inline styles
+        let style = svg.querySelector('style');
+        if (style) style = style.textContent.toLowerCase().includes('currentcolor');
+        let fill = svg.querySelector('[fill]');
+        if (fill) fill = fill.getAttribute('fill').toLowerCase().includes('currentcolor');
+        // replace image with SVG, ensuring color inheritance
+        if ((style || fill) || (!style && !fill)) {
+          const p = icon.closest('p');
+          if (p) p.removeAttribute('class');
+          icon.replaceWith(svg);
+        }
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0 });
+  observer.observe(icon);
+}
+
 /**
  * Replaces image icons with inline SVGs when they enter the viewport.
  */
 export function swapIcons() {
-  document.querySelectorAll('span.icon > img').forEach((icon) => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(async (entry) => {
-        if (entry.isIntersecting) {
-          const resp = await fetch(icon.src);
-          const temp = document.createElement('div');
-          temp.innerHTML = await resp.text();
-          const svg = temp.querySelector('svg');
-          temp.remove();
-          // check if svg has inline styles
-          let style = svg.querySelector('style');
-          if (style) style = style.textContent.toLowerCase().includes('currentcolor');
-          let fill = svg.querySelector('[fill]');
-          if (fill) fill = fill.getAttribute('fill').toLowerCase().includes('currentcolor');
-          // replace image with SVG, ensuring color inheritance
-          if ((style || fill) || (!style && !fill)) {
-            const p = icon.closest('p');
-            if (p) p.removeAttribute('class');
-            icon.replaceWith(svg);
-          }
-          observer.disconnect();
-        }
-      });
-    }, { threshold: 0 });
-    observer.observe(icon);
+  document.querySelectorAll('span.icon > img[src]').forEach((icon) => {
+    swapIcon(icon);
   });
+}
+
+export function buildIcon(name, modifier) {
+  const icon = document.createElement('span');
+  icon.className = `icon icon-${name}`;
+  if (modifier) icon.classList.add(modifier);
+  decorateIcon(icon);
+  return icon;
 }
 
 /**

@@ -636,6 +636,7 @@ export {
   createOptimizedPicture,
   decorateBlock,
   decorateBlocks,
+  decorateIcon,
   decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
