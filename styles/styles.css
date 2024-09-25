@@ -34,11 +34,12 @@
 
   /* spacing */
   --spacing-xxl: var(--spacing-600);
-  --spacing-xl:  var(--spacing-500);
-  --spacing-l:   var(--spacing-400);
-  --spacing-m:   var(--spacing-300);
-  --spacing-s:   var(--spacing-200);
-  --spacing-xs:  var(--spacing-100);
+   --spacing-xl: var(--spacing-500);
+    --spacing-l: var(--spacing-400);
+    --spacing-m: var(--spacing-300);
+    --spacing-s: var(--spacing-200);
+   --spacing-xs: var(--spacing-100);
+  --spacing-xxs: var(--spacing-75);
 
   /* shadows */
   --shadow-default: 0 1px 6px 0 var(--transparent-black-300);
@@ -180,6 +181,21 @@ img {
   color: currentcolor;
 }
 
+.icon.icon-chevron.right svg,
+.icon.icon-chevron.right img {
+  transform: rotate(-90deg);
+}
+
+.icon.icon-chevron.left svg,
+.icon.icon-chevron.left img {
+  transform: rotate(90deg);
+}
+
+.icon.icon-chevron.top svg,
+.icon.icon-chevron.top img {
+  transform: rotate(180deg);
+}
+
 i.symbol {
   display: inline-block;
   position: relative;
@@ -236,6 +252,7 @@ h6 {
   font-family: var(--heading-font-family);
   font-weight: var(--weight-bold);
   line-height: var(--line-height-l);
+  word-break: break-word;
 }
 
 h1 {
@@ -323,6 +340,7 @@ a:any-link {
   color: var(--color-link);
   text-decoration: underline;
   transition: color 0.2s;
+  word-break: break-word;
 }
 
 a:hover {

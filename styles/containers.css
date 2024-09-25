@@ -6,9 +6,9 @@
 
   /* rounding */
   --rounding-xl: 16px;
-  --rounding-l: 10px;
-  --rounding-m: 8px;
-  --rounding-s: 4px;
+   --rounding-l: 10px;
+   --rounding-m: 8px;
+   --rounding-s: 4px;
 
   /* spacing */
     --spacing-50: 2px;
@@ -23,4 +23,18 @@
    --spacing-800: 64px;
    --spacing-900: 80px;
   --spacing-1000: 96px;
+
+  /* icons */
+  --icon-l: 24px;
+  --icon-m: 20px;
+  --icon-s: 16px;
+}
+
+@media (width >= 900px) {
+  :root {
+    /* icons */
+    --icon-l: 20px;
+    --icon-m: 16px;
+    --icon-s: 12px;
+  }
 }
