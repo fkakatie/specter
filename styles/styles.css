@@ -28,9 +28,9 @@
   --color-link-hover: var(--blue-1000);
 
   /* fonts */
-  --body-font-family: NotoSans, NotoSans-fallback, sans-serif;
+  --body-font-family: notosans, notosans-fallback, sans-serif;
   --heading-font-family: var(--body-font-family);
-  --code-font-family: NotoSansMono, NotoSansMono-fallback, monospace;
+  --code-font-family: notosansmono, notosansmono-fallback, monospace;
 
   /* spacing */
   --spacing-xxl: var(--spacing-600);
@@ -62,13 +62,13 @@
 
 /* fallback fonts */
 @font-face {
-  font-family: NotoSans-fallback;
+  font-family: notosans-fallback;
   size-adjust: 105.431%;
   src: local('Arial');
 }
 
 @font-face {
-  font-family: NotoSansMono-fallback;
+  font-family: notosansmono-fallback;
   size-adjust: 99.991%;
   src: local('Courier New');
 }

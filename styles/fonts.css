@@ -1,7 +1,7 @@
 /* stylelint-disable max-line-length */
 @font-face {
   font-display: swap;
-  font-family: NotoSans;
+  font-family: notosans;
   font-style: normal;
   font-weight: 700;
   src: url('../fonts/NotoSans-bold.woff2') format('woff2');
@@ -10,7 +10,7 @@
 
 @font-face {
   font-display: swap;
-  font-family: NotoSans;
+  font-family: notosans;
   font-style: normal;
   font-weight: 800;
   src: url('../fonts/NotoSans-extrabold.woff2') format('woff2');
@@ -19,7 +19,7 @@
 
 @font-face {
   font-display: swap;
-  font-family: NotoSans;
+  font-family: notosans;
   font-style: normal;
   font-weight: 500;
   src: url('../fonts/NotoSans-medium.woff2') format('woff2');
@@ -28,7 +28,7 @@
 
 @font-face {
   font-display: swap;
-  font-family: NotoSans;
+  font-family: notosans;
   font-style: normal;
   font-weight: 400;
   src: url('../fonts/NotoSans-regular.woff2') format('woff2');
@@ -37,7 +37,7 @@
 
 @font-face {
   font-display: swap;
-  font-family: NotoSansMono;
+  font-family: notosansmono;
   font-style: normal;
   font-weight: 400;
   src: url('../fonts/NotoSansMono.woff2') format('woff2');
