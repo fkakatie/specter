@@ -42,8 +42,6 @@ function swapIcon(icon) {
         if (fill) fill = fill.getAttribute('fill').toLowerCase().includes('currentcolor');
         // replace image with SVG, ensuring color inheritance
         if ((style || fill) || (!style && !fill)) {
-          const p = icon.closest('p');
-          if (p) p.className = 'icon-wrapper';
           icon.replaceWith(svg);
         }
         observer.disconnect();

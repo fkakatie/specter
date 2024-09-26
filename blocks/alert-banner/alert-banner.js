@@ -20,7 +20,7 @@ export default async function decorate(block) {
   const icon = block.querySelector('p > span.icon');
   if (icon) {
     const wrapper = icon.closest('p');
-    if (!wrapper.textContent) wrapper.className = 'icon-wrapper';
+    if (!wrapper.textContent) wrapper.classList.add('icon-wrapper');
   }
 
   // separate button wrapper from alert content
