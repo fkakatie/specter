@@ -16,6 +16,13 @@ export default async function decorate(block) {
     wrapper.classList.add(...variants);
   }
 
+  // separate icon wrapper from alert content
+  const icon = block.querySelector('p > span.icon');
+  if (icon) {
+    const wrapper = icon.closest('p');
+    if (!wrapper.textContent) wrapper.className = 'icon-wrapper';
+  }
+
   // separate button wrapper from alert content
   const buttons = block.querySelector('.button-wrapper');
   if (buttons) {
@@ -27,7 +34,7 @@ export default async function decorate(block) {
   const closeButton = document.createElement('button');
   const close = buildIcon('close');
   closeButton.append(close);
-  closeButton.className = 'button ghost';
+  closeButton.className = 'button close';
   closeButton.setAttribute('type', 'button');
   closeButton.setAttribute('aria-label', 'Close alert');
   closeButton.addEventListener('click', () => closeAlert(block));

@@ -448,17 +448,20 @@ button.button.accent:focus {
   background-color: var(--gray-200);
 }
 
-a.button.ghost,
-button.button.ghost {
+button.button.close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   border-color: transparent;
+  padding: 0.4em;
   background-color: transparent;
   color: currentcolor;
+  line-height: 0;
 }
 
-a.button.ghost:hover,
-button.button.ghost:hover,
-button.button.ghost:focus {
-  background-color: var(--gray-200);
+button.button.close:hover,
+button.button.close:focus {
+  background-color: var(--transparent-black-100);
 }
 
 /* form elements */
