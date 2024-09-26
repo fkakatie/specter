@@ -43,7 +43,7 @@ function swapIcon(icon) {
         // replace image with SVG, ensuring color inheritance
         if ((style || fill) || (!style && !fill)) {
           const p = icon.closest('p');
-          if (p) p.removeAttribute('class');
+          if (p) p.className = 'icon-wrapper';
           icon.replaceWith(svg);
         }
         observer.disconnect();
