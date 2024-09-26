@@ -173,6 +173,10 @@ img {
   height: auto;
 }
 
+.icon-wrapper {
+  line-height: 0;
+}
+
 .icon svg,
 .icon img {
   width: 1em;
@@ -410,7 +414,7 @@ button.button.emphasis:focus {
 a.button.outline,
 button.button.outline {
   border-color: var(--color-link);
-  background-color: var(--color-background);
+  background-color: transparent;
   color: var(--color-link);
 }
 
@@ -441,6 +445,19 @@ a.button.accent:hover,
 button.button.accent:hover,
 button.button.accent:focus {
   border-color: var(--gray-200);
+  background-color: var(--gray-200);
+}
+
+a.button.ghost,
+button.button.ghost {
+  border-color: transparent;
+  background-color: transparent;
+  color: currentcolor;
+}
+
+a.button.ghost:hover,
+button.button.ghost:hover,
+button.button.ghost:focus {
   background-color: var(--gray-200);
 }
 
