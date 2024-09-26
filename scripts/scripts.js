@@ -90,7 +90,7 @@ function decorateButtons(main) {
     a.title = a.title || a.textContent;
     const p = a.closest('p');
     // identify standalone links
-    if (a.href !== a.textContent && p.textContent === a.textContent) {
+    if (a.href !== a.textContent && p.textContent.trim() === a.textContent.trim()) {
       a.className = 'button';
       const strong = a.closest('strong');
       const em = a.closest('em');
@@ -98,9 +98,20 @@ function decorateButtons(main) {
       if (double) a.classList.add('accent');
       else if (strong) a.classList.add('emphasis');
       else if (em) a.classList.add('outline');
-      p.innerHTML = a.outerHTML;
+      p.replaceChild(a, p.firstChild);
       p.className = 'button-wrapper';
     }
+  });
+  // collapse adjacent button wrappers
+  const wrappers = main.querySelectorAll('p.button-wrapper');
+  let previousWrapper = null;
+  wrappers.forEach((wrapper) => {
+    if (previousWrapper && previousWrapper.nextElementSibling === wrapper) {
+      // move all buttons from the current wrapper to the previous wrapper
+      previousWrapper.append(...wrapper.childNodes);
+      // remove the empty wrapper
+      wrapper.remove();
+    } else previousWrapper = wrapper; // now set the current wrapper as the previous wrapper
   });
 }
 
