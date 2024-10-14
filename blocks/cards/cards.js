@@ -20,8 +20,9 @@ export default function decorate(block) {
   ul.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((h) => {
     h.className = 'detail';
   });
-  ul.querySelectorAll(':scope > li a[href]').forEach((a) => {
+  ul.querySelectorAll(':scope > li a[href]:first-of-type').forEach((a) => {
     const li = a.closest('li');
+    li.className = 'cards-card-linked';
     li.addEventListener('click', () => a.click());
   });
   block.textContent = '';
