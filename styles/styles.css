@@ -17,11 +17,10 @@
 :root {
   /* layers */
   --layer-elevated: var(--gray-25);
-  --layer-base: var(--layer-elevated);
-  --layer-depth: var(--gray-50);
-  --layer-pasteboard: var(--gray-100);
+  --layer-container: var(--gray-50);
+  --layer-base: var(--gray-25);
 
-  /* colors */
+  /* semantic colors */
   --color-background: var(--layer-base);
   --color-text: var(--gray-800);
   --color-link: var(--blue-900);
@@ -82,11 +81,11 @@
 body {
   display: none;
   margin: 0;
-  background-color: var(--layer-depth);
+  background-color: var(--layer-container);
   color: var(--color-text);
   font-family: var(--body-font-family);
   font-size: var(--body-size-m);
-  line-height: var(--line-height-m);
+  line-height: var(--line-height-l);
 }
 
 body.appear {
@@ -153,7 +152,7 @@ main .section.dark {
 }
 
 main .section.light {
-  background-color: var(--gray-100);
+  background-color: var(--layer-container);
 }
 
 main .section.dark {
@@ -255,7 +254,7 @@ h6 {
   scroll-margin: 1em;
   font-family: var(--heading-font-family);
   font-weight: var(--weight-bold);
-  line-height: var(--line-height-l);
+  line-height: var(--line-height-m);
   word-break: break-word;
 }
 
@@ -332,7 +331,7 @@ var {
 pre {
   border-radius: var(--rounding-l);
   padding: var(--spacing-m);
-  background-color: var(--layer-depth);
+  background-color: var(--layer-container);
   overflow-x: auto;
 }
 
@@ -342,7 +341,7 @@ pre::-webkit-scrollbar {
 
 pre::-webkit-scrollbar-thumb {
   background-color: var(--gray-500);
-  border: 8px solid var(--layer-depth);
+  border: 8px solid var(--layer-container);
   border-radius: 12px;
 }
 
@@ -356,7 +355,7 @@ samp,
 var {
   border-radius: var(--rounding-s);
   padding: 0 0.25em;
-  background-color: var(--layer-depth);
+  background-color: var(--layer-container);
 }
 
 /* links */
