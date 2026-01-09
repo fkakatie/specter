@@ -15,7 +15,7 @@ import {
 } from './aem.js';
 
 /**
- * Load fonts.css and set a session storage flag.
+ * Loads fonts.css and sets a session storage flag to enable early font loading.
  */
 async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
@@ -26,45 +26,100 @@ async function loadFonts() {
   }
 }
 
-function swapIcon(icon) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(async (entry) => {
-      if (entry.isIntersecting) {
-        const resp = await fetch(icon.src);
-        const temp = document.createElement('div');
-        temp.innerHTML = await resp.text();
-        const svg = temp.querySelector('svg');
-        temp.remove();
-        // check if svg has inline styles
-        let style = svg.querySelector('style');
-        if (style) style = style.textContent.toLowerCase().includes('currentcolor');
-        let fill = svg.querySelector('[fill]');
-        if (fill) fill = fill.getAttribute('fill').toLowerCase().includes('currentcolor');
-        // replace image with SVG, ensuring color inheritance
-        if ((style || fill) || (!style && !fill)) {
-          icon.replaceWith(svg);
-        }
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0 });
-  observer.observe(icon);
+/**
+ * Checks if an SVG uses currentcolor for dynamic color inheritance.
+ * @param {SVGElement} svg SVG element
+ * @returns {boolean} `true` if SVG uses currentcolor
+ */
+function usesCurrentColor(svg) {
+  const styleEl = svg.querySelector('style');
+  const inStyle = styleEl && styleEl.textContent.toLowerCase().includes('currentcolor');
+  const fills = svg.querySelectorAll('[fill]');
+  const inFill = [...fills].some((f) => f.getAttribute('fill').toLowerCase() === 'currentcolor');
+  const strokes = svg.querySelectorAll('[stroke]');
+  const inStroke = [...strokes].some((s) => s.getAttribute('stroke').toLowerCase() === 'currentcolor');
+  return inStyle || inFill || inStroke;
 }
 
 /**
- * Replaces image icons with inline SVGs when they enter the viewport.
+ * Fetches SVG content from a URL.
+ * @param {string} src URL of SVG icon
+ * @returns {Promise<string>} SVG markup
  */
-export function swapIcons() {
-  document.querySelectorAll('span.icon > img[src]').forEach((icon) => {
-    swapIcon(icon);
+function fetchIcon(src) {
+  window.hlx.icons = window.hlx.icons || new Map();
+  if (!window.hlx.icons.has(src)) {
+    window.hlx.icons.set(src, fetch(src).then((resp) => resp.text()));
+  }
+  return window.hlx.icons.get(src);
+}
+
+/**
+ * Swaps an icon image with its inline SVG.
+ * @param {HTMLImageElement} icon Icon image
+ */
+async function swapIcon(icon) {
+  const svgText = await fetchIcon(icon.src);
+  const temp = document.createElement('div');
+  temp.innerHTML = svgText;
+  const svg = temp.querySelector('svg');
+  temp.remove();
+  if (usesCurrentColor(svg)) {
+    const altText = icon.alt;
+    if (altText) {
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', altText);
+    }
+    icon.replaceWith(svg);
+  }
+}
+
+/**
+ * Returns the shared icon observer (creating it if needed).
+ * @returns {IntersectionObserver} Shared observer for lazy icon swapping
+ */
+function getIconObserver() {
+  if (!window.hlx.iconObserver) {
+    window.hlx.iconObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          window.hlx.iconObserver.unobserve(entry.target);
+          swapIcon(entry.target);
+        }
+      });
+    }, { threshold: 0 });
+  }
+  return window.hlx.iconObserver;
+}
+
+/**
+ * Observes icon images and replaces them with inline SVGs when they enter the viewport.
+ * @param {Element|Document} [container] Container to search for icons
+ */
+export function swapIcons(container = document) {
+  const observer = getIconObserver();
+  container.querySelectorAll('span.icon > img[src]:not([data-checked])').forEach((img) => {
+    img.dataset.checked = true;
+    observer.observe(img);
   });
 }
 
+/**
+ * Creates a span.icon element and registers it for SVG swapping.
+ * @param {string} name Icon name (used in class `icon-{name}`)
+ * @param {string} [modifier] Optional modifier class
+ * @returns {HTMLSpanElement} Decorated icon span
+ */
 export function buildIcon(name, modifier) {
   const icon = document.createElement('span');
   icon.className = `icon icon-${name}`;
   if (modifier) icon.classList.add(modifier);
   decorateIcon(icon);
+  const img = icon.querySelector('img');
+  if (img) {
+    img.dataset.checked = true;
+    getIconObserver().observe(img);
+  }
   return icon;
 }
 
@@ -72,18 +127,28 @@ export function buildIcon(name, modifier) {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-// function buildAutoBlocks(main) {
-//   try {
-//     // build auto blocks
-//   } catch (error) {
-//     // eslint-disable-next-line no-console
-//     console.error('Auto Blocking failed', error);
-//   }
-// }
+function buildAutoBlocks(main) {
+  const fragments = main.querySelectorAll('a[href*="/fragments/"]');
+  if (fragments.length > 0) {
+    // eslint-disable-next-line import/no-cycle
+    import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
+      Promise.all([...fragments].map(async (fragment) => {
+        try {
+          const { pathname } = new URL(fragment.href);
+          const frag = await loadFragment(pathname);
+          fragment.parentElement.replaceWith(frag.firstElementChild);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Fragment loading failed', error);
+        }
+      }));
+    });
+  }
+}
 
 /**
- * Decorates links with appropriate classes to style them as buttons
- * @param {HTMLElement} main The main container element
+ * Decorates standalone links as buttons.
+ * @param {Element} main Main container element
  */
 function decorateButtons(main) {
   main.querySelectorAll('p a[href]').forEach((a) => {
@@ -94,7 +159,7 @@ function decorateButtons(main) {
       a.className = 'button';
       const strong = a.closest('strong');
       const em = a.closest('em');
-      const double = !!strong && !!em;
+      const double = strong && em;
       if (double) a.classList.add('accent');
       else if (strong) a.classList.add('emphasis');
       else if (em) a.classList.add('outline');
@@ -102,6 +167,7 @@ function decorateButtons(main) {
       p.className = 'button-wrapper';
     }
   });
+
   // collapse adjacent button wrappers
   const wrappers = main.querySelectorAll('p.button-wrapper');
   let previousWrapper = null;
@@ -115,6 +181,9 @@ function decorateButtons(main) {
   });
 }
 
+/**
+ * Wraps paragraph images with `.img-wrapper` for styling hooks.
+ */
 function decorateImages(main) {
   main.querySelectorAll('p img').forEach((img) => {
     const p = img.closest('p');
@@ -124,13 +193,12 @@ function decorateImages(main) {
 
 /**
  * Decorates the main element.
- * @param {Element} main The main element
+ * @param {Element} main Main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
   decorateImages(main);
-  // buildAutoBlocks(main);
+  buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
@@ -138,7 +206,7 @@ export function decorateMain(main) {
 
 /**
  * Loads everything needed to get to LCP.
- * @param {Element} doc The container element
+ * @param {Element} doc Document element
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
@@ -164,7 +232,7 @@ async function loadEager(doc) {
 
 /**
  * Loads everything that doesn't need to be delayed.
- * @param {Element} doc The container element
+ * @param {Element} doc Document element
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
@@ -183,8 +251,7 @@ async function loadLazy(doc) {
 }
 
 /**
- * Loads everything that happens a lot later,
- * without impacting the user experience.
+ * Loads everything that happens a lot later without impacting UX.
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
@@ -192,6 +259,9 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+/**
+ * Orchestrates page loading in phases.
+ */
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
